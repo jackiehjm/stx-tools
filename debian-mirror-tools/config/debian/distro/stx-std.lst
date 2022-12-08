@@ -185,7 +185,6 @@ drbd-utils
 efitools
 
 #enable-dev-patch (not used in deployment)
-enable-dev-patch
 
 #etcd
 etcd-client
