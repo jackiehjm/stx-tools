@@ -20,7 +20,7 @@ from flask import request
 import logging
 
 STX_DISTRO = 'bullseye'
-STX_ARCH = 'amd64'
+STX_ARCH = 'arm64'
 PKG_BUILDER_LOG = '/localdisk/pkgbuilder.log'
 
 app = Flask(__name__)
