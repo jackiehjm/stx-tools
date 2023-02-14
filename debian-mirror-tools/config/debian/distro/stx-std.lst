@@ -33,8 +33,8 @@ bash-static
 bash
 
 # bnxt_en - Broadcom kernel modules
-bnxt-en
-bnxt-en-rt
+#bnxt-en
+#bnxt-en-rt
 
 #build-info
 #build-info-dev  # not used
@@ -46,7 +46,7 @@ centos-debian-compat
 #ceph
 ceph-base
 ceph-common
-ceph-fuse
+#ceph-fuse
 #ceph-grafana-dashboards  # not used
 ceph-mds
 #ceph-mgr-dashboard  # not used
@@ -235,10 +235,10 @@ grub-common
 #grub-coreboot-bin  # not used
 #grub-coreboot-dbg  # not used
 #grub-coreboot  # not used
-#grub-efi-amd64-bin  # not used
-#grub-efi-amd64-dbg  # not used
-#grub-efi-amd64-signed-template  # not used
-#grub-efi-amd64  # not used
+#grub-efi-arm64-bin  # not used
+#grub-efi-arm64-dbg  # not used
+#grub-efi-arm64-signed-template  # not used
+#grub-efi-arm64  # not used
 #grub-efi-ia32-bin  # not used
 #grub-efi-ia32-dbg  # not used
 #grub-efi-ia32  # not used
@@ -250,9 +250,9 @@ grub-common
 #grub-ieee1275-dbg  # not used
 #grub-ieee1275  # not used
 #grub-linuxbios  # not used
-grub-pc-bin
+#grub-pc-bin
 #grub-pc-dbg  # not used
-grub-pc
+#grub-pc
 #grub-rescue-pc  # not used
 #grub-theme-starfield  # not used
 #grub-xen-bin  # not used
@@ -260,7 +260,9 @@ grub-pc
 #grub-xen-host  # not used
 #grub-xen  # not used
 grub2-common
-grub2
+#grub2
+grub-efi-arm64-bin
+grub-efi-arm64
 
 #grubby
 grubby
@@ -288,32 +290,32 @@ ifupdown-extra
 initscripts-config
 
 #intel-i40e
-i40e
-i40e-rt
-i40e-cvl-2.54
-i40e-cvl-2.54-rt
+#i40e
+#i40e-rt
+#i40e-cvl-2.54
+#i40e-cvl-2.54-rt
 
 #intel-iavf
-iavf
-iavf-rt
-iavf-cvl-2.54
-iavf-cvl-2.54-rt
+#iavf
+#iavf-rt
+#iavf-cvl-2.54
+#iavf-cvl-2.54-rt
 
 #intel-ice
-ice
-ice-rt
-ice-cvl-2.54
-ice-cvl-2.54-rt
+#ice
+#ice-rt
+#ice-cvl-2.54
+#ice-cvl-2.54-rt
 
 #intel-igb_uio
-igb-uio
-igb-uio-rt
+#igb-uio
+#igb-uio-rt
 
 kdump-tools
 
 #intel-opae-fpga
-kmod-opae-fpga-driver
-kmod-opae-fpga-driver-rt
+#kmod-opae-fpga-driver
+#kmod-opae-fpga-driver-rt
 
 #io-scheduler
 io-scheduler
@@ -358,21 +360,21 @@ libbnxt-re
 #hyperv-daemons  # not used
 #libcpupower-dev  # not used
 #libcpupower1  # not used
-linux-compiler-gcc-10-x86
+#linux-compiler-gcc-10-x86
 #linux-config-5.10  # not used
 #linux-cpupower  # not used
-linux-headers-5.10.0-6-amd64
-linux-rt-headers-5.10.0-6-rt-amd64
+linux-headers-5.10.0-6-arm64
+#linux-rt-headers-5.10.0-6-rt-arm64
 linux-headers-5.10.0-6-common
-linux-rt-headers-5.10.0-6-rt-common
-#linux-image-5.10.0-6-amd64-dbg # not used
-#linux-rt-image-5.10.0-6-rt-amd64-dbg # not used
-linux-image-5.10.0-6-amd64-unsigned
-linux-rt-image-5.10.0-6-rt-amd64-unsigned
-#linux-image-amd64-dbg  # not used
-#linux-image-amd64-signed-template  # not used
+#linux-rt-headers-5.10.0-6-rt-common
+#linux-image-5.10.0-6-arm64-dbg # not used
+#linux-rt-image-5.10.0-6-rt-arm64-dbg # not used
+linux-image-5.10.0-6-arm64-unsigned
+#linux-rt-image-5.10.0-6-rt-arm64-unsigned
+#linux-image-arm64-dbg  # not used
+#linux-image-arm64-signed-template  # not used
 linux-kbuild-5.10
-linux-rt-kbuild-5.10
+#linux-rt-kbuild-5.10
 linux-libc-dev
 #linux-perf-5.10-dbgsym  # not used
 linux-perf-5.10
@@ -410,10 +412,10 @@ keystone
 python3-keystone
 
 #kpatch-0.9.5
-kpatch
-kpatch-build
-kpatch-prebuilt
-kpatch-prebuilt-rt
+#kpatch
+#kpatch-build
+#kpatch-prebuilt
+#kpatch-prebuilt-rt
 
 #kubernetes monitoring
 kube-cpusets
@@ -484,9 +486,9 @@ lsb-base
 memcached-custom
 
 #mlnx-ofa_kernel
-mlnx-ofed-kernel-modules
-mlnx-ofed-kernel-modules-rt
-mlnx-ofed-kernel-utils
+#mlnx-ofed-kernel-modules
+#mlnx-ofed-kernel-modules-rt
+#mlnx-ofed-kernel-utils
 
 #monitor-helm
 #monitor-helm  # only used for build
@@ -729,7 +731,7 @@ puppet-module-puppetlabs-postgresql
 puppet-module-puppetlabs-stdlib
 
 #pxe-network-installer
-pxe-network-installer
+#pxe-network-installer
 
 #python-aodhclient
 python-aodhclient-doc
@@ -855,8 +857,8 @@ python3-setuptools
 python-siteconfig
 
 #qat17
-qat1.7.l
-qat1.7.l-rt
+#qat1.7.l
+#qat1.7.l-rt
 
 #rabbitmq-server
 rabbitmq-server
@@ -933,7 +935,7 @@ sm-tools
 shadow-utils-config
 
 #shim-unsigned
-shim-helpers-amd64-signed-template
+shim-helpers-arm64-signed-template
 shim-unsigned
 
 #sm
