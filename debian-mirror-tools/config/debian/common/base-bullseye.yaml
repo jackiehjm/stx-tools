@@ -1,6 +1,6 @@
 ---
 name: starlingx
-machine: intel-x86-64
+machine: qemuarm64
 image_type:
 - iso
 - ostree-repo
@@ -24,12 +24,12 @@ gpg:
     BOOT_GPG_PASSPHRASE: SecureCore
     BOOT_KEYS_DIR: $OECORE_NATIVE_SYSROOT/usr/share/bootfs/boot_keys
     BOOT_GPG_KEY: $OECORE_NATIVE_SYSROOT/usr/share/bootfs/boot_keys/BOOT-GPG-PRIVKEY-SecureBootCore
-    BOOT_SINGED_SHIM: $IMAGE_ROOTFS/usr/lib/shim/bootx64.efi
-    BOOT_SINGED_SHIMTOOL: $IMAGE_ROOTFS/usr/lib/shim/mmx64.efi
-    BOOT_SINGED_GRUB: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/grubx64.efi
+    BOOT_SINGED_SHIM: $IMAGE_ROOTFS/usr/lib/shim/bootaa64.efi
+    BOOT_SINGED_SHIMTOOL: $IMAGE_ROOTFS/usr/lib/shim/mmaa64.efi
+    BOOT_SINGED_GRUB: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/grubaa64.efi
     BOOT_EFITOOL: $IMAGE_ROOTFS/usr/lib/efitools/x86_64-linux-gnu/LockDown.efi
     BOOT_GRUB_CFG: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/grub.cfg
-    BOOT_NOSIG_GRUB: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/bootx64-nosig.efi
+    BOOT_NOSIG_GRUB: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/bootaa64-nosig.efi
     EFI_SECURE_BOOT: disable
 packages: []
 external-packages: []
@@ -44,7 +44,7 @@ rootfs-pre-scripts:
   # Speed up apt/dpkg used for running build-image
   echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/unsafe-io
   apt update
-  apt install -y --no-install-recommends linux-image-5.10.0-6-amd64-unsigned linux-rt-image-5.10.0-6-rt-amd64-unsigned grub-common
+  apt install -y --no-install-recommends linux-image-5.10.0-6-arm64-unsigned linux-rt-image-5.10.0-6-rt-arm64-unsigned grub-common
   apt install -y --allow-downgrades --allow-unauthenticated --no-install-recommends ostree ostree-boot libostree-1-1 ostree-upgrade-mgr
   apt install --no-install-recommends -y ifupdown
   apt install -y bc vim uuid-runtime iputils-ping
@@ -78,10 +78,10 @@ rootfs-post-scripts:
   # Only used for running build-image
   rm -f etc/dpkg/dpkg.cfg.d/unsafe-io
 - |-
-  # There is ${IMAGE_ROOTFS}/var/pxeboot/grubx64.efi from parent linux installed
+  # There is ${IMAGE_ROOTFS}/var/pxeboot/grubaa64.efi from parent linux installed
   # For secure boot feature, it should be replaced with the right one
   if [ "$EFI_SECURE_BOOT" = enable ]; then
-    install -m 0644 ${IMAGE_ROOTFS}/boot/efi/EFI/BOOT/grubx64.efi ${IMAGE_ROOTFS}/var/pxeboot/grubx64.efi
+    install -m 0644 ${IMAGE_ROOTFS}/boot/efi/EFI/BOOT/grubaa64.efi ${IMAGE_ROOTFS}/var/pxeboot/grubaa64.efi
   fi
 environments:
 - NO_RECOMMENDATIONS="1"
@@ -109,13 +109,13 @@ iso-grub-entry: |
     menuentry 'Serial Console' --unrestricted --id=serial {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-amd64
+      linux /bzImage-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64
       initrd @INITRD@
     }
     menuentry 'Graphical Console' --unrestricted --id=graphical {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-amd64 console=tty1
+      linux /bzImage-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
       initrd @INITRD@
     }
   }
@@ -124,13 +124,13 @@ iso-grub-entry: |
     menuentry 'Serial Console' --unrestricted --id=serial {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-amd64
+      linux /bzImage-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64
       initrd @INITRD@
     }
     menuentry 'Graphical Console' --unrestricted --id=graphical {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-amd64 console=tty1
+      linux /bzImage-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
       initrd @INITRD@
     }
   }
@@ -139,13 +139,13 @@ iso-grub-entry: |
     menuentry 'Serial Console' --unrestricted --id=serial {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-amd64 efi=runtime
+      linux /bzImage-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 efi=runtime
       initrd @INITRD@
     }
     menuentry 'Graphical Console' --unrestricted --id=graphical {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-amd64 efi=runtime console=tty1
+      linux /bzImage-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 efi=runtime console=tty1
       initrd @INITRD@
     }
   }
@@ -162,13 +162,13 @@ iso-syslinux-entry: |
       menu label Serial Console
       kernel /bzImage-std
       ipappend 2
-      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-amd64
+      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64
 
     label 2
       menu label Graphical Console
       kernel /bzImage-std
       ipappend 2
-      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-amd64 console=tty1
+      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
   menu end
 
   menu begin
@@ -178,13 +178,13 @@ iso-syslinux-entry: |
       menu label Serial Console
       kernel /bzImage-std
       ipappend 2
-      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-amd64
+      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64
 
     label 4
       menu label Graphical Console
       kernel /bzImage-std
       ipappend 2
-      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-amd64 console=tty1
+      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
   menu end
 
   menu begin
@@ -194,13 +194,13 @@ iso-syslinux-entry: |
       menu label Serial Console
       kernel /bzImage-rt
       ipappend 2
-      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-amd64
+      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64
 
     label 6
       menu label Graphical Console
       kernel /bzImage-rt
       ipappend 2
-      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-amd64 console=tty1
+      append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 console=tty1
   menu end
 
 iso-post-script: |
@@ -210,7 +210,7 @@ iso-post-script: |
   # According to `multiple-kernels' in lat yaml, install std
   # or rt kernel to ISO
   for k in ${OSTREE_MULTIPLE_KERNELS}; do
-    if [ "${k%%-rt-amd64}" != "${k}" ]; then
+    if [ "${k%%-rt-arm64}" != "${k}" ]; then
       cp ${DEPLOY_DIR_IMAGE}/${k} bzImage-rt
       if [ -e ${DEPLOY_DIR_IMAGE}/${k}.sig ]; then
         cp ${DEPLOY_DIR_IMAGE}/${k}.sig bzImage-rt.sig
@@ -261,8 +261,8 @@ iso-post-script: |
 
   # 2.2.2 EFI PXE
   cp -a EFI pxeboot
-  if [ -e ${IMAGE_ROOTFS}/boot/efi/EFI/BOOT/bootx64-nosig.efi ]; then
-    cp ${IMAGE_ROOTFS}/boot/efi/EFI/BOOT/bootx64-nosig.efi pxeboot/EFI/BOOT/
+  if [ -e ${IMAGE_ROOTFS}/boot/efi/EFI/BOOT/bootaa64-nosig.efi ]; then
+    cp ${IMAGE_ROOTFS}/boot/efi/EFI/BOOT/bootaa64-nosig.efi pxeboot/EFI/BOOT/
   fi
 
   # 2.3 Edit grub.cfg and pxelinux.cfg/default
@@ -299,9 +299,9 @@ iso-post-script: |
 
   # 2.4 Tweak PXE if EFI secure boot enabled
   if [ "$EFI_SECURE_BOOT" = enable ]; then
-    # On some host, PXE make bootx64.efi search grubx64.efi
+    # On some host, PXE make bootaa64.efi search grubaa64.efi
     # from tftp/ dir other than tftp/EFI/BOOT/
-    install -m 0644 EFI/BOOT/grubx64.efi pxeboot/
+    install -m 0644 EFI/BOOT/grubaa64.efi pxeboot/
 
     # Resign grub.cfg
     rm pxeboot/EFI/BOOT/grub.cfg.sig
@@ -348,7 +348,7 @@ iso-post-script: |
   sed -i "s/^DEFAULT .*//g" \
     isolinux/isolinux.cfg
 
-  if [ "${OSTREE_DEFAULT_KERNEL%%-rt-amd64}" != "${OSTREE_DEFAULT_KERNEL}" ]; then
+  if [ "${OSTREE_DEFAULT_KERNEL%%-rt-arm64}" != "${OSTREE_DEFAULT_KERNEL}" ]; then
     # Boot rt kernel by default
     sed -i "s/ set default=.*/ set default=2/g" \
       EFI/BOOT/grub.cfg
@@ -389,8 +389,8 @@ iso-post-script: |
 initramfs-sign-script: |
   echo "End of initramfs-sign-script!"
 
-multiple-kernels: vmlinuz-*[!t]-amd64 vmlinuz-*-rt-amd64
-default-kernel: vmlinuz-*[!t]-amd64
+multiple-kernels: vmlinuz-*[!t]-arm64 vmlinuz-*-rt-arm64
+default-kernel: vmlinuz-*[!t]-arm64
 system:
 - contains:
   - /localdisk/deploy/lat-initramfs.yaml
