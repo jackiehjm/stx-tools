@@ -1,6 +1,6 @@
 ---
 name: starlingx-initramfs-ostree-image
-machine: intel-x86-64
+machine: qemuarm64
 image_type:
 - initramfs
 debootstrap-mirror: deb-merge-all
@@ -23,8 +23,6 @@ packages:
 - bash
 - bc
 - bind9-dnsutils
-- bnxt-en
-- bnxt-en-rt
 - busybox
 - bzip2
 - ca-certificates
@@ -48,12 +46,6 @@ packages:
 - iavf-cvl-2.54-rt
 - iavf-cvl-4.10
 - iavf-cvl-4.10-rt
-- ice
-- ice-rt
-- ice-cvl-2.54
-- ice-cvl-2.54-rt
-- ice-cvl-4.10
-- ice-cvl-4.10-rt
 - i40e
 - i40e-rt
 - i40e-cvl-2.54
@@ -68,11 +60,9 @@ packages:
 - kbd
 - kmod
 - libostree-1-1
-- linux-image-5.10.0-6-amd64-unsigned
-- linux-rt-image-5.10.0-6-rt-amd64-unsigned
+- linux-image-5.10.0-6-arm64-unsigned
+- linux-rt-image-5.10.0-6-rt-arm64-unsigned
 - mdadm
-- mlnx-ofed-kernel-modules
-- mlnx-ofed-kernel-modules-rt
 - mount
 - mttyexec
 - multipath-config
