@@ -7,19 +7,16 @@
     <partition>/machine</partition>
   </resource>
   <os>
-    <type arch='x86_64' machine='pc-q35-xenial'>hvm</type>
+    <type arch='aarch64' machine='virt-5.2'>hvm</type>
+    <loader readonly='yes' type='pflash'>/usr/share/AAVMF/AAVMF_CODE.fd</loader>
+    <nvram template='/usr/share/AAVMF/AAVMF_VARS.fd'>/var/lib/libvirt/qemu/nvram/controller-0_VARS.fd</nvram>
   </os>
   <features>
     <acpi/>
     <apic/>
     <pae/>
   </features>
-  <cpu match='exact'>
-    <model fallback='forbid'>Nehalem</model>
-    <topology sockets='1' cores='4' threads='1'/>
-    <feature policy='optional' name='vmx'/>
-    <feature policy='optional' name='svm'/>
-  </cpu>
+  <cpu mode='host-passthrough' check='none'/>
   <clock offset='utc'/>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>

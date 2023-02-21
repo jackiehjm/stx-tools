@@ -7,11 +7,11 @@
 
 # install_packages.sh - install required packages
 
-sudo apt-get install virt-manager libvirt-bin qemu-system apparmor -y
+sudo apt-get install virt-manager libvirt-daemon qemu-system apparmor -y
 
 cat << EOF | sudo tee /etc/libvirt/qemu.conf
 user = "root"
 group = "root"
 EOF
 
-sudo service libvirt-bin restart
+sudo service libvirtd restart
