@@ -16,7 +16,7 @@ FROM debian:bullseye
 
 MAINTAINER Chen Qi <Qi.Chen@windriver.com>
 
-ARG LAT_BINARY_RESOURCE_PATH=http://mirror.starlingx.cengn.ca/mirror/lat-sdk/lat-sdk-20230510
+ARG LAT_BINARY_RESOURCE_PATH=stx/toCOPY/lat-sdk
 
 # Install necessary packages
 RUN apt-get -y update && apt-get --no-install-recommends -y install \
@@ -46,21 +46,22 @@ COPY stx/toCOPY/builder/pubkey.rsa /opt/LAT/
 # Prepare executables
 COPY stx/toCOPY/lat-tool/lat/ /opt/LAT/lat
 # Download & install LAT SDK.
-RUN wget --quiet ${LAT_BINARY_RESOURCE_PATH}/lat-sdk.sh --output-document=/opt/LAT/AppSDK.sh && \
-    chmod +x /opt/LAT/AppSDK.sh && \
+
+COPY ${LAT_BINARY_RESOURCE_PATH}/AppSDK.sh /opt/LAT/
+RUN chmod +x /opt/LAT/AppSDK.sh && \
     /opt/LAT/AppSDK.sh -d /opt/LAT/SDK -y && \
     rm -f /opt/LAT/AppSDK.sh
 
 # Fix: Use Debian CDN address for geo-frendly servers
-RUN sed -i 's/ftp.cn.debian.org/deb.debian.org/g' /opt/LAT/SDK/sysroots/x86_64-wrlinuxsdk-linux/usr/lib/python3.10/site-packages/genimage/debian_constant.py
+RUN sed -i 's/ftp.cn.debian.org/deb.debian.org/g' /opt/LAT/SDK/sysroots/aarch64-wrlinuxsdk-linux/usr/lib/python3.11/site-packages/genimage/debian_constant.py
 
 # Fix: Align DEFAULT_INITRD_NAME with our custom names
-RUN sed -i 's/debian-initramfs-ostree-image/starlingx-initramfs-ostree-image/g' /opt/LAT/SDK/sysroots/x86_64-wrlinuxsdk-linux/usr/lib/python3.10/site-packages/genimage/debian_constant.py
+RUN sed -i 's/debian-initramfs-ostree-image/starlingx-initramfs-ostree-image/g' /opt/LAT/SDK/sysroots/aarch64-wrlinuxsdk-linux/usr/lib/python3.11/site-packages/genimage/debian_constant.py
 
 # Fix: Align kernel with custom starlingx kernel
-RUN sed -i 's/linux-image-amd64/linux-image-5.10.0-6-amd64-unsigned/g' /opt/LAT/SDK/sysroots/x86_64-wrlinuxsdk-linux/usr/lib/python3.10/site-packages/genimage/debian_constant.py
+RUN sed -i 's/linux-image-arm64/linux-image-5.10.0-6-arm64-unsigned/g' /opt/LAT/SDK/sysroots/aarch64-wrlinuxsdk-linux/usr/lib/python3.11/site-packages/genimage/debian_constant.py
 
-RUN sed -i 's/Wind River Linux Graphics development .* ostree/StarlingX ostree/g' /opt/LAT/SDK/sysroots/corei7-64-wrs-linux/boot/efi/EFI/BOOT/grub.cfg
+RUN sed -i 's/Wind River Linux Graphics development .* ostree/StarlingX ostree/g' /opt/LAT/SDK/sysroots/cortexa57-wrs-linux/boot/efi/EFI/BOOT/grub.cfg
 
 # Add vimrc
 COPY stx/toCOPY/common/vimrc.local /etc/vim/vimrc.local
