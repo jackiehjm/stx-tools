@@ -100,7 +100,7 @@ ostree:
   OSTREE_FDISK_RSZ: 20480
   OSTREE_FDISK_VSZ: 20480
   OSTREE_FDISK_FSZ: 32
-  OSTREE_CONSOLE: console=ttyS0,115200
+  OSTREE_CONSOLE: console=ttyAMA0,115200
 debootstrap-key: ''
 apt-keys:
 - /opt/LAT/pubkey.rsa
