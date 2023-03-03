@@ -44,7 +44,7 @@ rootfs-pre-scripts:
   # Speed up apt/dpkg used for running build-image
   echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/unsafe-io
   apt update
-  apt install -y --no-install-recommends linux-image-5.10.0-6-arm64-unsigned linux-rt-image-5.10.0-6-rt-arm64-unsigned grub-common
+  apt install -y --no-install-recommends linux-image-5.10.0-6-arm64-unsigned grub-common
   apt install -y --allow-downgrades --allow-unauthenticated --no-install-recommends ostree ostree-boot libostree-1-1 ostree-upgrade-mgr
   apt install --no-install-recommends -y ifupdown
   apt install -y bc vim uuid-runtime iputils-ping
@@ -109,13 +109,13 @@ iso-grub-entry: |
     menuentry 'Serial Console' --unrestricted --id=serial {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64
+      linux /vmlinux-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64
       initrd @INITRD@
     }
     menuentry 'Graphical Console' --unrestricted --id=graphical {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
+      linux /vmlinux-std %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
       initrd @INITRD@
     }
   }
@@ -124,13 +124,13 @@ iso-grub-entry: |
     menuentry 'Serial Console' --unrestricted --id=serial {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64
+      linux /vmlinux-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64
       initrd @INITRD@
     }
     menuentry 'Graphical Console' --unrestricted --id=graphical {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
+      linux /vmlinux-std %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
       initrd @INITRD@
     }
   }
@@ -139,13 +139,13 @@ iso-grub-entry: |
     menuentry 'Serial Console' --unrestricted --id=serial {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 efi=runtime
+      linux /vmlinux-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 efi=runtime
       initrd @INITRD@
     }
     menuentry 'Graphical Console' --unrestricted --id=graphical {
       set fallback=1
       efi-watchdog enable 0 180
-      linux /bzImage-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 efi=runtime console=tty1
+      linux /vmlinux-rt %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 efi=runtime console=tty1
       initrd @INITRD@
     }
   }
@@ -160,13 +160,13 @@ iso-syslinux-entry: |
 
     label 1
       menu label Serial Console
-      kernel /bzImage-std
+      kernel /vmlinux-std
       ipappend 2
       append initrd=@INITRD@ %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64
 
     label 2
       menu label Graphical Console
-      kernel /bzImage-std
+      kernel /vmlinux-std
       ipappend 2
       append initrd=@INITRD@ %BOOT_PARAMS% traits=controller defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
   menu end
@@ -176,13 +176,13 @@ iso-syslinux-entry: |
 
     label 3
       menu label Serial Console
-      kernel /bzImage-std
+      kernel /vmlinux-std
       ipappend 2
       append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64
 
     label 4
       menu label Graphical Console
-      kernel /bzImage-std
+      kernel /vmlinux-std
       ipappend 2
       append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker defaultkernel=vmlinuz-*[!t]-arm64 console=tty1
   menu end
@@ -192,13 +192,13 @@ iso-syslinux-entry: |
 
     label 5
       menu label Serial Console
-      kernel /bzImage-rt
+      kernel /vmlinux-rt
       ipappend 2
       append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64
 
     label 6
       menu label Graphical Console
-      kernel /bzImage-rt
+      kernel /vmlinux-rt
       ipappend 2
       append initrd=@INITRD@ %BOOT_PARAMS% traits=controller,worker,lowlatency defaultkernel=vmlinuz-*-rt-arm64 console=tty1
   menu end
@@ -211,14 +211,14 @@ iso-post-script: |
   # or rt kernel to ISO
   for k in ${OSTREE_MULTIPLE_KERNELS}; do
     if [ "${k%%-rt-arm64}" != "${k}" ]; then
-      cp ${DEPLOY_DIR_IMAGE}/${k} bzImage-rt
+      cp ${DEPLOY_DIR_IMAGE}/${k} vmlinux-rt
       if [ -e ${DEPLOY_DIR_IMAGE}/${k}.sig ]; then
-        cp ${DEPLOY_DIR_IMAGE}/${k}.sig bzImage-rt.sig
+        cp ${DEPLOY_DIR_IMAGE}/${k}.sig vmlinux-rt.sig
       fi
     else
-      cp ${DEPLOY_DIR_IMAGE}/${k} bzImage-std
+      cp ${DEPLOY_DIR_IMAGE}/${k} vmlinux-std
       if [ -e ${DEPLOY_DIR_IMAGE}/${k}.sig ]; then
-        cp ${DEPLOY_DIR_IMAGE}/${k}.sig bzImage-std.sig
+        cp ${DEPLOY_DIR_IMAGE}/${k}.sig vmlinux-std.sig
       fi
     fi
   done
@@ -248,7 +248,7 @@ iso-post-script: |
   mkdir -p pxeboot/pxelinux.cfg
 
   # 2.1 Kernel and initramfs
-  install -m 644 bzImage* pxeboot
+  install -m 644 vmlinux* pxeboot
   install -m 644 initrd* pxeboot
 
   # 2.2 Bootloader
