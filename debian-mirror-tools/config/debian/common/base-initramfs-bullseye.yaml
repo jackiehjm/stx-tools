@@ -59,6 +59,7 @@ packages:
 - iputils-ping
 - rng-tools
 - rpm2cpio
+- rsync
 - sed
 - tar
 - udev
