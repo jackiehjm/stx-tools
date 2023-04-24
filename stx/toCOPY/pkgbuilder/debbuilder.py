@@ -20,7 +20,7 @@ import subprocess
 
 BUILD_ROOT = '/localdisk/loadbuild/'
 STORE_ROOT = '/localdisk/pkgbuilder'
-BUILD_ENGINE = 'sbuild'
+BUILD_ENGINE = 'sbuild --host=arm64'
 STX_LOCALRC = '/usr/local/bin/stx/stx-localrc'
 SBUILD_CONF = '/etc/sbuild/sbuild.conf'
 ENVIRON_VARS = ['OSTREE_OSNAME', 'CENGNURL', 'DEBIAN_DISTRIBUTION', 'DEBIAN_VERSION']
