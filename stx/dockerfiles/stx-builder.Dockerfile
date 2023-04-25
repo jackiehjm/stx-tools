@@ -17,9 +17,11 @@ FROM debian:bullseye
 ENV container=docker \
     PATH=/opt/LAT/lat:$PATH
 
-RUN echo "deb-src http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
-    echo "deb-src http://deb.debian.org/debian buster main" >> /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian bullseye contrib" >> /etc/apt/sources.list
+RUN echo "deb-src [arch=amd64,arm64] http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
+    echo "deb-src [arch=amd64,arm64] http://deb.debian.org/debian buster main" >> /etc/apt/sources.list && \
+    echo "deb [arch=amd64,arm64] http://deb.debian.org/debian bullseye contrib" >> /etc/apt/sources.list
+
+RUN dpkg --add-architecture arm64
 
 # Download required dependencies by mirror/build processes.
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -60,7 +62,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # docker-cli
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
     echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+  "deb [arch=$(dpkg --print-architecture),arm64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
   $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
     apt-get update && \
     apt-get install --no-install-recommends -y docker-ce-cli
