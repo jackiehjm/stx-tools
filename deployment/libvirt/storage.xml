@@ -47,7 +47,7 @@
     <interface type='bridge'>
       <source bridge='%BR2%'/>
       <target dev='vnet9'/>
-      <model type='e1000'/>
+      <model type='virtio'/>
       <boot order='2'/>
       <alias name='net1'/>
     </interface>
