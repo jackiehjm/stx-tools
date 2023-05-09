@@ -53,7 +53,7 @@
     <interface type='bridge'>
       <source bridge='%BR2%'/>
       <target dev='vnet1'/>
-      <model type='e1000'/>
+      <model type='virtio'/>
       <boot order='3'/>
       <alias name='net1'/>
     </interface>
