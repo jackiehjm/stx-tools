@@ -139,7 +139,7 @@ destroy_controller() {
             then
                 sudo virsh destroy ${CONTROLLER_NODE}
             fi
-            sudo virsh undefine ${CONTROLLER_NODE}
+            sudo virsh undefine --nvram ${CONTROLLER_NODE}
             delete_disk /var/lib/libvirt/images/${CONTROLLER_NODE}-0.img
             delete_disk /var/lib/libvirt/images/${CONTROLLER_NODE}-1.img
             if ([ "$CONFIGURATION" == "simplex" ] || [ "$CONFIGURATION" == "duplex" ]); then
@@ -182,7 +182,7 @@ destroy_node() {
         then
             sudo virsh destroy ${NODE}
         fi
-        sudo virsh undefine ${NODE}
+        sudo virsh undefine --nvram ${NODE}
         delete_disk /var/lib/libvirt/images/${NODE}-0.img
         delete_disk /var/lib/libvirt/images/${NODE}-1.img
         [ -e ${DOMAIN_FILE} ] && delete_xml ${DOMAIN_FILE}
