@@ -43,9 +43,9 @@ delete_disk() {
         return 1
     fi
 
-    file -b "$fpath" | grep -q "^QEMU QCOW Image (v3),"
+    file -b "$fpath" | grep -q "^QEMU QCOW2 Image (v3),"
     if [ $? -ne 0 ]; then
-        echo "file to delete is not QEMU QCOW Image (v3): $fpath" >&2
+        echo "file to delete is not QEMU QCOW2 Image (v3): $fpath" >&2
         return 1
     fi
 
