@@ -61,4 +61,4 @@ if ([ "$CONFIGURATION" == "dedicatedstorage" ]); then
     done
 fi
 
-sudo virt-manager
+#sudo virt-manager
