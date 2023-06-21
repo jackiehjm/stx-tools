@@ -1,0 +1,104 @@
+<domain type='kvm' id='164'>
+  <name>NAME</name>
+  <memory unit='GiB'>18</memory>
+  <currentMemory unit='GiB'>18</currentMemory>
+  <vcpu placement='static'>6</vcpu>
+  <resource>
+    <partition>/machine</partition>
+  </resource>
+  <os>
+    <type arch='aarch64' machine='virt-5.2'>hvm</type>
+    <loader readonly='yes' type='pflash'>/usr/share/AAVMF/AAVMF_CODE.fd</loader>
+    <nvram template='/usr/share/AAVMF/AAVMF_VARS.fd'>/var/lib/libvirt/qemu/nvram/controller-0_VARS.fd</nvram>
+  </os>
+  <features>
+    <acpi/>
+    <apic/>
+    <pae/>
+  </features>
+  <cpu mode='host-passthrough' check='none'/>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <emulator>/usr/bin/qemu-system-aarch64</emulator>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='DISK0'/>
+      <backingStore/>
+      <target dev='sda' bus='scsi'/>
+      <alias name='scsi0-0-0-0'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+      <boot order='1'/>
+    </disk>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='DISK1'/>
+      <backingStore/>
+      <target dev='sdb' bus='scsi'/>
+      <alias name='scsi0-0-0-1'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='1'/>
+    </disk>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='DISK2'/>
+      <backingStore/>
+      <target dev='sdc' bus='scsi'/>
+      <alias name='scsi0-0-0-2'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='2'/>
+    </disk>
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <source file='ISO'/>
+      <backingStore/>
+      <target dev='sdd' bus='scsi'/>
+      <readonly/>
+      <alias name='scsi0-0-0-3'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='3'/>
+      <boot order='2'/>
+    </disk>
+    <controller type='usb' index='0' model='qemu-xhci' ports='15'>
+      <alias name='usb'/>
+      <address type='pci' domain='0x0000' bus='0x02' slot='0x00' function='0x0'/>
+    </controller>
+    <controller type='scsi' index='0' model='virtio-scsi'>
+      <alias name='scsi0'/>
+      <address type='pci' domain='0x0000' bus='0x03' slot='0x00' function='0x0'/>
+    </controller>
+    <interface type='bridge'>
+      <source bridge='%BR1%'/>
+      <target dev='vnet0'/>
+      <model type='e1000'/>
+      <alias name='net0'/>
+    </interface>
+    <interface type='bridge'>
+      <source bridge='%BR2%'/>
+      <target dev='vnet1'/>
+      <model type='virtio'/>
+      <boot order='3'/>
+      <alias name='net1'/>
+    </interface>
+    <serial type='pty'>
+      <source path='/dev/pts/8'/>
+      <target port='0'/>
+      <alias name='serial0'/>
+    </serial>
+    <console type='pty' tty='/dev/pts/8'>
+      <source path='/dev/pts/8'/>
+      <target type='serial' port='0'/>
+      <alias name='serial0'/>
+    </console>
+    <graphics type='vnc' port='5900' autoport='yes' listen='127.0.0.1' keymap='en-us'>
+      <listen type='address' address='127.0.0.1'/>
+    </graphics>
+    <memballoon model='virtio'>
+      <alias name='balloon0'/>
+    </memballoon>
+  </devices>
+  <seclabel type='dynamic' model='apparmor' relabel='yes'>
+    <label>libvirt-6afab2ba-0ed0-45cb-b1bd-985e211a48de</label>
+    <imagelabel>libvirt-6afab2ba-0ed0-45cb-b1bd-985e211a48de</imagelabel>
+  </seclabel>
+</domain>
+

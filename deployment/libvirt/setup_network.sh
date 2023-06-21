@@ -32,6 +32,9 @@ for i in {1..4}; do
 done
 
 sudo ip addr add $EXTERNAL_IP dev ${BRIDGE_INTERFACE}1
+sudo ip addr add 192.168.100.1/24 dev ${BRIDGE_INTERFACE}2
+sudo ip addr add 192.168.101.1/24 dev ${BRIDGE_INTERFACE}3
+sudo ip addr add 192.168.102.1/24 dev ${BRIDGE_INTERFACE}4
 sudo ip link set ${BRIDGE_INTERFACE}1 up
 sudo ip link set ${BRIDGE_INTERFACE}2 up
 sudo ip link set ${BRIDGE_INTERFACE}3 up
