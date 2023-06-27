@@ -51,7 +51,7 @@ class LATD(object):
                 f.write("%s: %s\n" % (time.time(), msg))
 
         logger.info("workspace_dir: %s" % self.workspace_dir)
-        env_script = self.appsdk_dir + '/environment-setup-corei7-64-wrs-linux'
+        env_script = self.appsdk_dir + '/environment-setup-cortexa57-wrs-linux'
         channel.server_init_channel()
         while(True):
             logger.info("latd waiting for client request")
