@@ -28,8 +28,8 @@ gpg:
     BOOT_SINGED_SHIMTOOL: $IMAGE_ROOTFS/usr/lib/shim/mmaa64.efi
     BOOT_SINGED_GRUB: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/grubaa64.efi
     BOOT_EFITOOL: $IMAGE_ROOTFS/usr/lib/efitools/x86_64-linux-gnu/LockDown.efi
-    BOOT_GRUB_CFG: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/grub.cfg
-    BOOT_NOSIG_GRUB: $IMAGE_ROOTFS/boot/efi/EFI/BOOT/bootaa64-nosig.efi
+    BOOT_GRUB_CFG: $OECORE_TARGET_SYSROOT/boot/efi/EFI/BOOT/grub.cfg
+    BOOT_NOSIG_GRUB: $OECORE_TARGET_SYSROOT/boot/efi/EFI/BOOT/bootaa64-nosig.efi
     EFI_SECURE_BOOT: disable
 packages: []
 external-packages: []
