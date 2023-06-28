@@ -386,9 +386,6 @@ iso-post-script: |
       ln -snf ../efi.img images/efiboot.img
   fi
 
-initramfs-sign-script: |
-  echo "End of initramfs-sign-script!"
-
 multiple-kernels: vmlinuz-*[!t]-arm64 vmlinuz-*-rt-arm64
 default-kernel: vmlinuz-*[!t]-arm64
 system:
