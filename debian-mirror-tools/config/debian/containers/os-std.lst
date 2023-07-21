@@ -23,4 +23,4 @@ python3-intelhex 2.1-2.2
 python3-pybind11 2.6.2-1
 python3-thriftpy 0.3.9+ds1-1+b5
 trace-cmd 2.9.1-1
-usb.ids 2022.05.20-0+deb11u1
+usb.ids 2022.05.20-0+deb11u1 https://snapshot.debian.org/archive/debian/20220702T033910Z/pool/main/u/usb.ids/usb.ids_2022.05.20-0+deb11u1_all.deb
