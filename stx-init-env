@@ -69,6 +69,12 @@ RESTART_MINIKUBE=0
 CLEAN_CONFIG=0
 USE_DOCKER_CACHE=0
 
+ARCH="amd64"
+uname_arch=$(uname -m)
+if [ "${uname_arch}" = "aarch64" ]; then
+    ARCH="arm64"
+fi
+
 minikube_started() {
     local result
     result=$(
@@ -333,7 +339,12 @@ if [[ -n "${BUILD_DOCKER_IMAGES}" ]] ; then
         docker_build_args+=("--no-cache")
     fi
     for img in $BUILD_DOCKER_IMAGES; do
-        docker build "${docker_build_args[@]}" -t $img:$DOCKER_TAG_LOCAL -f stx/dockerfiles/$img.Dockerfile . || exit 1
+        img_arch=${img}_${ARCH}.Dockerfile
+        if [[ -f stx/dockerfiles/${img_arch} ]]; then
+            docker build "${docker_build_args[@]}" -t $img:$DOCKER_TAG_LOCAL -f stx/dockerfiles/${img_arch} . || exit 1
+        else
+            docker build "${docker_build_args[@]}" -t $img:$DOCKER_TAG_LOCAL -f stx/dockerfiles/$img.Dockerfile . || exit 1
+        fi
         info "built image $img:$DOCKER_TAG_LOCAL"
     done
 fi
