@@ -86,6 +86,12 @@ ASSUME_YES=0
 
 COREUTILS_DOCKER_IMAGE="debian:bookworm-20240130-slim"
 
+ARCH="amd64"
+uname_arch=$(uname -m)
+if [ "${uname_arch}" = "aarch64" ]; then
+    ARCH="arm64"
+fi
+
 info() {
     local tty_on tty_off
     if [[ -t 2 ]] ; then
@@ -712,7 +718,12 @@ if [[ -n "${BUILD_DOCKER_IMAGES}" ]] ; then
         docker_build_args+=("--no-cache")
     fi
     for img in $BUILD_DOCKER_IMAGES; do
-        docker build "${docker_build_args[@]}" -t $img:$DOCKER_TAG_LOCAL -f "$STX_TOOLS_DIR/"stx/dockerfiles/$img.Dockerfile "$STX_TOOLS_DIR" || exit 1
+        img_arch=${img}_${ARCH}.Dockerfile
+        if [[ -f $STX_TOOLS_DIR/stx/dockerfiles/${img_arch} ]]; then
+            docker build "${docker_build_args[@]}" -t $img:$DOCKER_TAG_LOCAL -f "$STX_TOOLS_DIR/"stx/dockerfiles/${img_arch} "$STX_TOOLS_DIR" || exit 1
+        else
+            docker build "${docker_build_args[@]}" -t $img:$DOCKER_TAG_LOCAL -f "$STX_TOOLS_DIR/"stx/dockerfiles/$img.Dockerfile "$STX_TOOLS_DIR" || exit 1
+        fi
         info "built image $img:$DOCKER_TAG_LOCAL"
     done
 fi
