@@ -18,9 +18,13 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 import logging
+import platform
 
 STX_DISTRO = 'bullseye'
 STX_ARCH = 'amd64'
+if platform.machine() == 'aarch64':
+    STX_ARCH = "arm64"
+
 PKG_BUILDER_LOG = '/localdisk/pkgbuilder.log'
 
 app = Flask(__name__)
