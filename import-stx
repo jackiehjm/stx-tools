@@ -226,10 +226,22 @@ elif [ "$STX_PLATFORM" = "kubernetes" ]; then
         return 1
     fi
 
-    if ! kubectl get namespace 2>/dev/null | grep -q $STX_K8S_NAMESPACE; then
-        notice_warn "namespace $STX_K8S_NAMESPACE not found"
-        return 1
-    fi
+    (
+        # get the list of namespace names
+        if ! ns_list="$(kubectl get namespace --no-headers -o custom-columns=NAME:.metadata.name)" ; then
+            notice_warn "Failed to list namespaces" >&2
+            exit 1
+        fi
+        # check if our namespace exists
+        if ! echo "$ns_list" | grep -q -F -x "$STX_K8S_NAMESPACE" ; then
+            notice_warn "namespace \"$STX_K8S_NAMESPACE\" not found"
+            echo "Full k8s namespace list:" >&2
+            for ns in $ns_list ; do
+                echo "    $ns" >&2
+            done
+            exit 1
+        fi
+    ) || return 1
 
 else
     notice_warn "\$STX_PLATFORM not specified, valid options are: 'minikube' or 'kubernetes'"
