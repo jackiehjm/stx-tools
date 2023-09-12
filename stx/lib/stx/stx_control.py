@@ -87,8 +87,36 @@ class HandleControlTask:
         proxyport = self.config.get('project', 'proxyport')
         buildbranch = self.config.get('project', 'buildbranch')
         manifest = self.config.get('project', 'manifest')
-        cengnurl = self.config.get('repomgr', 'cengnurl')
-        cengnstrategy = self.config.get('repomgr', 'cengnstrategy')
+        # The cengn references below are obsolete, and are retained for
+        # backward compatibility with preexisting build environmnets.
+        # Please use stx_mirror versions instead.
+        cengnurl = None
+        try:
+            stx_mirror_url = self.config.get('repomgr', 'stx_mirror_url')
+        except Exception:
+            # second chance using old cengnurl
+            try:
+                cengnurl = self.config.get('repomgr', 'cengnurl')
+                stx_mirror_url = cengnurl
+            except Exception:
+                # Fail on stx_mirror_url without catching the error  this time
+                stx_mirror_url = self.config.get('repomgr', 'stx_mirror_url')
+
+        cengnstrategy = None
+        try:
+            stx_mirror_strategy = self.config.get('repomgr', 'stx_mirror_strategy')
+        except Exception:
+            try:
+                # second chance using old cengnstrategy
+                cengnstrategy = self.config.get('repomgr', 'cengnstrategy')
+                stx_mirror_strategy = cengnstrategy
+                if cengnstrategy == 'cengn':
+                    stx_mirror_strategy = 'stx_mirror'
+                if cengnstrategy == 'cengn_first':
+                    stx_mirror_strategy = 'stx_mirror_first'
+            except Exception:
+                # Fail on stx_mirror_strategy without catching the error  this time
+                stx_mirror_strategy = self.config.get('repomgr', 'stx_mirror_strategy')
         sourceslist = self.config.get('repomgr', 'sourceslist')
         deblist = self.config.get('repomgr', 'deblist')
         dsclist = self.config.get('repomgr', 'dsclist')
@@ -171,8 +199,13 @@ stx-pkgbuilder/configmap/')
                 line = line.replace("@BUILDBRANCH@", buildbranch)
                 line = line.replace("@MANIFEST@", manifest)
                 line = line.replace("@HOSTUSERNAME@", hostusername)
-                line = line.replace("@CENGNURL@", cengnurl)
-                line = line.replace("@CENGNSTRATEGY@", cengnstrategy)
+                # The cengn references below are obsolete, and are retained for
+                # backward compatibility with preexisting build environmnets.
+                # Please use stx_mirror versions instead.
+                line = line.replace("@CENGNURL@", stx_mirror_url)
+                line = line.replace("@CENGNSTRATEGY@", stx_mirror_strategy)
+                line = line.replace("@STX_MIRROR_URL@", stx_mirror_url)
+                line = line.replace("@STX_MIRROR_STRATEGY@", stx_mirror_strategy)
                 line = line.replace("@OSTREE_OSNAME@", ostree_osname)
                 line = line.replace("@DEBIAN_SNAPSHOT@", debian_snapshot)
                 line = line.replace("@DEBIAN_SECURITY_SNAPSHOT@", debian_security_snapshot)
