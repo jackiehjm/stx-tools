@@ -17,7 +17,8 @@ FROM debian:bullseye
 MAINTAINER Jackie Huang <jackie.huang@windriver.com>
 
 ARG STX_MIRROR_URL=https://mirror.starlingx.windriver.com/mirror
-ARG LAT_BINARY_RESOURCE_PATH=${STX_MIRROR_URL}/lat-sdk/lat-sdk-20231206
+#ARG LAT_BINARY_RESOURCE_PATH=${STX_MIRROR_URL}/lat-sdk/lat-sdk-20231206
+ARG LAT_BINARY_RESOURCE_PATH=http://147.11.105.121:5088/3_open_source/stx/images-arm64/lat-sdk/lat-sdk-build_20230525
 
 # Update certificates
 RUN apt-get -y update && apt-get -y install --no-install-recommends ca-certificates && update-ca-certificates
