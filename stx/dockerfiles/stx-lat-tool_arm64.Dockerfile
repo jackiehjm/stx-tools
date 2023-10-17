@@ -67,6 +67,9 @@ RUN sed -i 's/linux-image-arm64/linux-image-stx-arm64/g' /opt/LAT/SDK/sysroots/a
 
 RUN sed -i 's/Wind River Linux Graphics development .* ostree/StarlingX ostree/g' /opt/LAT/SDK/sysroots/cortexa57-wrs-linux/boot/efi/EFI/BOOT/grub.cfg
 
+# Workaround for missing README file
+RUN cp /opt/LAT/SDK/sysroots/aarch64-wrlinuxsdk-linux/usr/share/genimage/doc/target_intel-socfpga-64.README.md.in /opt/LAT/SDK/sysroots/aarch64-wrlinuxsdk-linux/usr/share/genimage/doc/target_qemuarm64.README.md.in 
+
 # Add vimrc
 COPY stx/toCOPY/common/vimrc.local /etc/vim/vimrc.local
 RUN chmod 0644 /etc/vim/vimrc.local
