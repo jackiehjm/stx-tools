@@ -16,7 +16,7 @@ FROM debian:bullseye
 
 MAINTAINER Chen Qi <Qi.Chen@windriver.com>
 
-ARG LAT_BINARY_RESOURCE_PATH=http://mirror.starlingx.cengn.ca/mirror/lat-sdk/lat-sdk-22.12-20230908
+ARG LAT_BINARY_RESOURCE_PATH=http://mirror.starlingx.cengn.ca/mirror/lat-sdk/lat-sdk-22.12-20231011
 
 # Update certificates
 RUN apt-get -y update && apt-get -y install --no-install-recommends ca-certificates && update-ca-certificates
