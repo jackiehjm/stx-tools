@@ -6,8 +6,8 @@ libhwloc5 1.11.12-3 https://snapshot.debian.org/archive/debian/20220703T032011Z/
 libltdl-dev 2.4.6-15
 libnuma-dev 2.0.12-1+b1
 libpython2-stdlib 2.7.18-3
-libpython2.7-minimal 2.7.18-8
-libpython2.7-stdlib 2.7.18-8
+libpython2.7-minimal 2.7.18-8+deb11u1 https://snapshot.debian.org/archive/debian/20230926T090746Z/pool/main/p/python2.7/libpython2.7-minimal_2.7.18-8%2Bdeb11u1_amd64.deb
+libpython2.7-stdlib 2.7.18-8+deb11u1 https://snapshot.debian.org/archive/debian/20230926T090746Z/pool/main/p/python2.7/libpython2.7-stdlib_2.7.18-8%2Bdeb11u1_amd64.deb
 libsimdjson5 0.7.1-1
 libstdc++-10-dev 10.2.1-6
 pandoc 2.9.2.1-1+deb11u1 https://snapshot.debian.org/archive/debian/20230925T090110Z/pool/main/p/pandoc/pandoc_2.9.2.1-1%2Bdeb11u1_amd64.deb
@@ -15,8 +15,8 @@ pkg-config 0.29.2-1
 pybind11-dev 2.6.2-1
 python2 2.7.18-3
 python2-minimal 2.7.18-3
-python2.7 2.7.18-8
-python2.7-minimal 2.7.18-8
+python2.7  2.7.18-8+deb11u1  https://snapshot.debian.org/archive/debian/20230926T090746Z/pool/main/p/python2.7/python2.7_2.7.18-8%2Bdeb11u1_amd64.deb
+python2.7-minimal  2.7.18-8+deb11u1  https://snapshot.debian.org/archive/debian/20230926T090746Z/pool/main/p/python2.7/python2.7-minimal_2.7.18-8%2Bdeb11u1_amd64.deb
 python3-all 3.9.2-3
 python3-dev 3.9.2-3
 python3-intelhex 2.1-2.2
