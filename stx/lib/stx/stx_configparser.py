@@ -228,7 +228,7 @@ class STXConfigParser:
             old_value = 'http://mirror.starlingx.cengn.ca/mirror/debian/debian/snapshot.debian.org/archive/debian-security'
             new_value = 'https://mirror.starlingx.windriver.com/mirror/debian/debian/snapshot.debian.org/archive/debian-security'
             current_value = self.__get('project', 'debian_security_snapshot_base')
-            if current_value == old_value or current_value == old_value2:
+            if current_value == old_value:
                 self.__upgrade_nonempty_key('project', 'debian_security_snapshot_base', new_value)
                 debian_snapshot_stx_mirror_upgraded = True
 
